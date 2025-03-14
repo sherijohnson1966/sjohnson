@@ -18,11 +18,16 @@ from sklearn.metrics import accuracy_score
 #import numpy as np
 
 #read data
-df = pd.read_csv('/home/sjohnson/datafile/alzheimers_prediction_dataset.csv')
-#print(df.head())
+#df = pd.read_csv('/home/sjohnson/datafile/alzheimers_prediction_dataset.csv') #original
+#df = pd.read_csv(r"\\172.22.50.3\datasets\E\alzheimers_prediction_dataset.csv") 
+df = pd.read_csv("http://172.22.50.3/datasets/alzheimers_prediction_dataset.csv") #*works!
+print(df.head())
 
-df2 = pd.read_csv('/home/sjohnson/datafile/CountryCodes.csv')
-#print(df2.head())
+#df2 = pd.read_csv('/home/sjohnson/datafile/CountryCodes.csv')
+#df2 = pd.read_csv('https://www.worldometers.info/country-codes/') #not working -not csv file?
+df2 = pd.read_csv('https://raw.githubusercontent.com/sherijohnson1966/sjohnson/refs/heads/main/CountryCodes.csv')  #**works
+
+print(df2.head())
 
 #add country code to df
 df = df.join(df2.set_index('Country'), on=['Country'])
@@ -63,12 +68,22 @@ def neveroccasionally(x):
 
  #   Diabetes, Hypertension, Family History of Alzheimers, Genetic Risk Factor
 # Alzheimer’s Diagnosis
+
 def noyes(x):
     if(x == 'No'):
         return 0
     else: #Yes
         return 1
 
+'''
+def noyes(x):
+    if(x == 'No'):
+        return 0
+    elif (x== 'Yes'):
+        return 1
+    else: 
+        return 0
+'''
  #cholesterol Level,    
 def normalhigh(x):
     if(x == 'Normal'):
@@ -131,7 +146,8 @@ df['Sleep Quality'] = df['Sleep Quality'].apply(pooravggood)
 df['Dietary Habits'] = df['Dietary Habits'].apply(unhealthyavghealthy)
 df['Air Pollution Exposure'] = df['Air Pollution Exposure'].apply(lowmedhigh)
 df['Employment Status'] = df['Employment Status'].apply(employstatus)
-df['Genetic Risk Factor'] = df['Genetic Risk Factor'].apply(noyes)
+#df['Genetic Risk Factor'] = df['Genetic Risk Factor'].apply(noyes)
+df['Genetic Risk Factor (APOE-ε4 allele)'] = df['Genetic Risk Factor (APOE-ε4 allele)'].apply(noyes)
 df['Income Level'] = df['Income Level'].apply(lowmedhigh)
 df['Stress Levels'] = df['Stress Levels'].apply(lowmedhigh)
 df['Urban vs Rural Living'] = df['Urban vs Rural Living'].apply(urbanrural)
@@ -144,10 +160,11 @@ df['Social Engagement Level'] = df['Social Engagement Level'].apply(lowmedhigh)
 #Do we need to add it in?  Family History of Alzheimerâ€™s
 df.drop('Country', axis = 1, inplace= True)
 
-#print(df.head())
+print(df.head())
 
 #save to new file
-df.to_csv('/home/sjohnson/datafile/alzheimers_prediction_updated_applytest.csv', index = False)
+#df.to_csv('/home/sjohnson/datafile/alzheimers_prediction_updated_applytest.csv', index = False)
+df.to_csv('https://raw.githubusercontent.com/sherijohnson1966/sjohnson/refs/heads/main/alzheimers_prediction_updated_applytest.csv', index = False)
 
 #print(df.isnull().sum())
 
